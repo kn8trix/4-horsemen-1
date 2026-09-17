@@ -1,0 +1,6 @@
+{
+  "name": "Crossword Puzzle",
+  "description": "An interactive crossword puzzle game featuring multiple themed grids, clue navigation, auto-advance typing, reveal aids, and victory tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

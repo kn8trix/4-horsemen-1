@@ -1,115 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mini Games Hub</title>
-    <style>
-      :root {
-        --bg: #0b1220;
-        --panel: #111d32;
-        --panel-alt: #172948;
-        --accent: #6ee7b7;
-        --text: #eaf2ff;
-        --muted: #a7b7d6;
-        --shadow: rgba(7, 12, 20, 0.35);
-      }
-
-      * { box-sizing: border-box; }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        display: grid;
-        place-items: center;
-        background: radial-gradient(circle at top, #142847 0%, var(--bg) 60%);
-        color: var(--text);
-        font-family: Arial, sans-serif;
-      }
-
-      .launcher {
-        width: min(92vw, 560px);
-        background: rgba(17, 29, 50, 0.96);
-        border: 1px solid rgba(144, 179, 255, 0.25);
-        border-radius: 18px;
-        box-shadow: 0 24px 44px var(--shadow);
-        padding: 28px 24px;
-      }
-
-      h1 {
-        margin: 0 0 12px;
-        font-size: clamp(2rem, 3vw, 2.5rem);
-        text-align: center;
-      }
-
-      p {
-        margin: 0 0 18px;
-        color: var(--muted);
-        line-height: 1.5;
-        text-align: center;
-      }
-
-      .team-form {
-        display: grid;
-        gap: 14px;
-      }
-
-      label {
-        display: block;
-        font-size: 0.92rem;
-        color: var(--muted);
-      }
-
-      input {
-        width: 100%;
-        background: #0b172b;
-        border: 1px solid rgba(110, 231, 183, 0.35);
-        border-radius: 10px;
-        padding: 12px 14px;
-        color: var(--text);
-        font-size: 1rem;
-      }
-
-      .launch-button {
-        display: inline-block;
-        width: 100%;
-        border: none;
-        border-radius: 12px;
-        padding: 14px 16px;
-        background: linear-gradient(135deg, var(--accent), #50c8ff);
-        color: #062136;
-        font-weight: 700;
-        cursor: pointer;
-      }
-
-      .launch-button:hover {
-        filter: brightness(1.04);
-      }
-    </style>
+    <title>Crossword Puzzle</title>
+    <meta name="description" content="An interactive crossword puzzle game featuring multiple themed grids, clue navigation, auto-advance typing, reveal aids, and victory tracking." />
+    <meta property="og:title" content="Crossword Puzzle" />
+    <meta property="og:description" content="An interactive crossword puzzle game featuring multiple themed grids, clue navigation, auto-advance typing, reveal aids, and victory tracking." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
-    <main class="launcher">
-      <h1>Mini Games</h1>
-      <p>Choose the team ID, then open the Memory Match game for Game 1.</p>
-
-      <form class="team-form" id="teamForm">
-        <div>
-          <label for="teamId">Team ID</label>
-          <input id="teamId" name="teamId" type="text" value="TEAM123" maxlength="24" />
-        </div>
-        <button class="launch-button" type="submit">Launch Game 1</button>
-      </form>
-    </main>
-
-    <script>
-      const form = document.getElementById('teamForm');
-      const teamInput = document.getElementById('teamId');
-
-      form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const teamId = teamInput.value.trim() || 'TEAM123';
-        window.location.href = '/games/game1/?teamId=' + encodeURIComponent(teamId);
-      });
-    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+
