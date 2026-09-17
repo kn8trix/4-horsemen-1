@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Match | Game 1</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="game-header">
+        <div>
+          <p class="eyebrow">Memory Match</p>
+          <h1>Game 1</h1>
+        </div>
+        <div class="meta-box">
+          <span>Team: <strong id="teamLabel">TEAM123</strong></span>
+        </div>
+      </header>
+
+      <section class="info-bar" aria-live="polite">
+        <div class="stat"><span class="label">Moves</span><strong id="movesValue">0</strong></div>
+        <div class="stat"><span class="label">Pairs</span><strong id="pairsValue">0 / 8</strong></div>
+        <div class="stat"><span class="label">Score</span><strong id="scoreValue">0</strong></div>
+      </section>
+
+      <div id="statusBanner" class="status-banner" aria-live="polite">Game in progress</div>
+
+      <section id="board" class="board" aria-label="Memory card board"></section>
+
+      <div id="overlay" class="overlay hidden" aria-live="assertive">
+        <div class="overlay-card">
+          <h2 id="overlayTitle">PUZZLE SOLVED!</h2>
+          <p id="overlayMessage">Team complete</p>
+          <div id="overlayDetail" class="overlay-detail">Score: 0</div>
+        </div>
+      </div>
+    </main>
+
+    <script src="./game.js"></script>
+  </body>
+</html>

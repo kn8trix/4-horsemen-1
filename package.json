@@ -1,0 +1,12 @@
+{
+  "name": "mini-games-competition",
+  "version": "1.0.0",
+  "description": "Competition mini-games server and game assets.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.7"
+  }
+}
