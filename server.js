@@ -5,7 +5,7 @@ const { URL } = require('url');
 const sqlite3 = require('sqlite3').verbose();
 
 const PORT = process.env.PORT || 3000;
-const ROOT_DIR = path.resolve(__dirname, '..');
+const ROOT_DIR = __dirname;
 const LAUNCHER_DIR = __dirname;
 const DB_DIR = path.join(ROOT_DIR, 'data');
 const DB_PATH = path.join(DB_DIR, 'games.db');

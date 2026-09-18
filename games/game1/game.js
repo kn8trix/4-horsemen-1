@@ -10,6 +10,10 @@ const overlayTitle = document.getElementById('overlayTitle');
 const overlayMessage = document.getElementById('overlayMessage');
 const overlayDetail = document.getElementById('overlayDetail');
 
+// Round 1 is played by ONLY ONE PLAYER per team. The team_id is the only thing
+// pulled from the URL. We do NOT consult /api/games/status, nor any pre-existing
+// team "solved" flag, because that would block a single player from playing
+// even if a teammate already submitted a score.
 const teamId = new URLSearchParams(window.location.search).get('teamId') || 'TEAM123';
 const playerSlot = 'game1';
 
@@ -22,8 +26,6 @@ let matchedPairs = 0;
 let moves = 0;
 let gameStartedAt = Date.now();
 let solvedSubmitted = false;
-let statusPollTimer = null;
-let teamAlreadySolved = false;
 
 teamLabel.textContent = teamId;
 
@@ -105,7 +107,6 @@ function initializeGame() {
   updateStats();
   setStatus('Find all matching pairs.');
   hideOverlay();
-  checkTeamStatus();
 }
 
 function revealCard(cardElement) {
@@ -141,7 +142,7 @@ function updateCardState(cardElement, card) {
 }
 
 function handleCardClick(cardElement, card) {
-  if (lockBoard || teamAlreadySolved) {
+  if (lockBoard) {
     return;
   }
 
@@ -228,7 +229,6 @@ function hideOverlay() {
 
 function lockGameBoard() {
   lockBoard = true;
-  teamAlreadySolved = true;
   document.querySelectorAll('.card').forEach((cardElement) => {
     cardElement.disabled = true;
   });
@@ -240,10 +240,11 @@ async function submitSolve() {
   }
 
   solvedSubmitted = true;
+  const finalScore = calculateScore();
   const payload = {
     teamId,
     playerSlot,
-    score: calculateScore(),
+    score: finalScore,
     completedAt: new Date().toISOString()
   };
 
@@ -262,68 +263,28 @@ async function submitSolve() {
     }
 
     setStatus('Puzzle solved and submitted.');
+    showOverlay(
+      'ROUND 1 COMPLETE',
+      'Your Score: ' + finalScore,
+      'Score added to your team scoreboard.'
+    );
   } catch (error) {
     solvedSubmitted = false;
-    setStatus('Submit failed. Retry will happen on the next status check.');
+    setStatus('Submit failed. Please retry.');
+    showOverlay(
+      'SUBMISSION FAILED',
+      'Your score could not be saved.',
+      'Please retry. Your score was not recorded yet.'
+    );
     console.error('Submit solve failed:', error);
   }
-}
-
-async function checkTeamStatus() {
-  if (teamAlreadySolved) {
-    return;
-  }
-
-  try {
-    const response = await fetch(`/api/games/status?teamId=${encodeURIComponent(teamId)}`);
-    if (!response.ok) {
-      throw new Error('Status request failed');
-    }
-
-    const data = await response.json();
-
-    if (data.isSolved === true) {
-      lockGameBoard();
-      stopPolling();
-      showOverlay('TEAM VICTORY!', 'Your team has solved the challenge.', `Solved by: ${data.solvedBy || 'Another team member'}`);
-      setStatus('Team complete. Gameplay stopped.');
-      return;
-    }
-  } catch (error) {
-    console.error('Failed to fetch team status:', error);
-  }
-
-  if (!teamAlreadySolved && !solvedSubmitted) {
-    scheduleStatusPoll();
-  }
-}
-
-function stopPolling() {
-  if (statusPollTimer) {
-    clearTimeout(statusPollTimer);
-    statusPollTimer = null;
-  }
-}
-
-function scheduleStatusPoll() {
-  stopPolling();
-  statusPollTimer = setTimeout(() => {
-    checkTeamStatus();
-  }, 4000);
 }
 
 function finishGame() {
   const finalScore = calculateScore();
   lockBoard = true;
-  teamAlreadySolved = true;
-  showOverlay('PUZZLE SOLVED!', 'TEAM COMPLETE', `Score: ${finalScore}`);
   setStatus('Completed. Sending final team result.');
   submitSolve();
-  stopPolling();
 }
 
 initializeGame();
-
-window.addEventListener('beforeunload', () => {
-  stopPolling();
-});
